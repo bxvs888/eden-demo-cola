@@ -1,17 +1,17 @@
-# Dynamic-Datasource Multi-datasource
+﻿# Dynamic-Datasource Multi-datasource
 
-## What
+## Overview
 
 Dynamic-Datasource is a multi-datasource component based on Spring Boot. This project integrates it for dynamic multi-datasource switching.
 
-## Why
+## When to Use
 
 - Multi-datasource Support: One application connects to multiple databases
 - Dynamic Switching: Flexibly switch datasources using `@DS` annotation
 - Read-Write Splitting: Simple master-slave configuration for read-write splitting
 - Non-invasive: Annotation-based, no intrusion to business code
 
-## How
+## Setup
 
 ### 1. Enable Configuration
 
@@ -65,7 +65,7 @@ public class UserService {
 }
 ```
 
-## Cases
+## Example Scenarios
 
 ### Case 1: Class-level Switching
 
@@ -117,17 +117,18 @@ public class UserService {
 }
 ```
 
-## Pitfalls
+## Common Issues
 
 1. **Transaction Issue**: `@DS` annotation must take effect before `@Transactional`
 2. **AOP Failure**: Same-class method calls won't trigger AOP, datasource switching fails
 3. **Strict Mode**: Enable `strict: true` to fail fast when datasource doesn't exist
 4. **Connection Pool Isolation**: Each datasource has independent connection pool
 
-## Best Practices
+## Recommendations
 
 1. Use meaningful datasource names like `master`, `slave`, `order_db`
 2. Enable strict mode to avoid using wrong datasource names
 3. In read-write splitting, use master for writes, slave for reads
 4. Configure connection pool parameters for each datasource appropriately
+
 

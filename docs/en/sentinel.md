@@ -1,19 +1,19 @@
-# Sentinel Traffic Governance
+﻿# Sentinel Traffic Governance
 
-## What
+## Overview
 
 Sentinel is a traffic governance component open-sourced by Alibaba. This project integrates [Sentinel](https://github.com/shiyindaxiaojie/Sentinel) for rate limiting, circuit breaking, and system protection.
 
 ![](https://cdn.jsdelivr.net/gh/shiyindaxiaojie/cdn/sentinel/sentinel-dashboard-overview-custom.png)
 
-## Why
+## When to Use
 
 - Flow Control: Rate limiting based on QPS or concurrency to protect system stability
 - Circuit Breaking: Automatic circuit breaking when service anomalies occur to prevent avalanche
 - System Protection: Adaptive protection based on system load
 - Real-time Monitoring: Dashboard for real-time traffic and rule viewing
 
-## How
+## Setup
 
 ### 1. Deploy Sentinel Dashboard
 
@@ -77,7 +77,7 @@ public User getUserByIdFallback(Long id, Throwable ex) {
 }
 ```
 
-## Cases
+## Example Scenarios
 
 ### Case 1: QPS Flow Control Rule
 
@@ -137,16 +137,17 @@ public class SentinelBlockExceptionHandler implements BlockExceptionHandler {
 }
 ```
 
-## Pitfalls
+## Common Issues
 
 1. **Rule Persistence**: Rules configured in Dashboard are lost after restart, use Nacos for persistence
 2. **RESTful Compatible**: Enable `http-method-specify` to distinguish different HTTP methods
 3. **Resource Name**: The value of `@SentinelResource` must match the resource in the rule
 4. **Exception Handling**: `blockHandler` and `fallback` method signatures must match
 
-## Best Practices
+## Recommendations
 
 1. Use Nacos to persist rules to avoid rule loss
 2. Configure rate limiting and circuit breaking rules for core interfaces
 3. Set reasonable circuit breaking thresholds to avoid false positives
 4. Regularly check Dashboard monitoring data and adjust rules
+

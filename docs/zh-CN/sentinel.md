@@ -1,19 +1,19 @@
 # Sentinel 流量治理
 
-## 是什么（What）
+## 组件说明
 
 Sentinel 是阿里巴巴开源的流量治理组件，本项目集成 [Sentinel](https://github.com/shiyindaxiaojie/Sentinel) 实现限流、熔断、系统保护等功能。
 
 ![](https://cdn.jsdelivr.net/gh/shiyindaxiaojie/cdn/sentinel/sentinel-dashboard-overview-custom.png)
 
-## 为什么用（Why）
+## 适用场景
 
 - 流量控制：基于 QPS 或并发数限流，保护系统稳定
 - 熔断降级：服务异常时自动熔断，防止雪崩
 - 系统保护：基于系统负载自适应保护
 - 实时监控：Dashboard 实时查看流量和规则
 
-## 怎么用（How）
+## 接入步骤
 
 ### 1. 部署 Sentinel Dashboard
 
@@ -77,7 +77,7 @@ public User getUserByIdFallback(Long id, Throwable ex) {
 }
 ```
 
-## 实战案例（Cases）
+## 示例场景
 
 ### 案例一：QPS 限流规则
 
@@ -137,17 +137,18 @@ public class SentinelBlockExceptionHandler implements BlockExceptionHandler {
 }
 ```
 
-## 避坑指南（Pitfalls）
+## 常见问题
 
 1. **规则持久化**：Dashboard 配置的规则重启后丢失，需使用 Nacos 持久化
 2. **RESTful 兼容**：开启 `http-method-specify` 区分不同 HTTP 方法
 3. **资源名称**：`@SentinelResource` 的 value 需与规则中的 resource 一致
 4. **异常处理**：`blockHandler` 和 `fallback` 方法签名需匹配
 
-## 最佳实践（Best Practices）
+## 使用建议
 
 1. 使用 Nacos 持久化规则，避免规则丢失
 2. 为核心接口配置限流和熔断规则
 3. 合理设置熔断阈值，避免误熔断
 4. 定期查看 Dashboard 监控数据，调整规则
+
 

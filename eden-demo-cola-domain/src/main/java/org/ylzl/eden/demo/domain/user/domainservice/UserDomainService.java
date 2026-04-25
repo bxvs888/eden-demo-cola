@@ -18,6 +18,7 @@ package org.ylzl.eden.demo.domain.user.domainservice;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.ylzl.eden.demo.domain.user.ability.UserAbility;
 import org.ylzl.eden.demo.domain.user.entity.User;
 import org.ylzl.eden.demo.domain.user.gateway.UserGateway;
 import org.ylzl.eden.demo.domain.user.valueobject.Email;
@@ -25,68 +26,47 @@ import org.ylzl.eden.demo.domain.user.valueobject.Login;
 import org.ylzl.eden.demo.domain.user.valueobject.Password;
 import org.ylzl.eden.spring.framework.error.ClientAssert;
 
-/**
- * 用户领域服务
- *
- * @author <a href="mailto:shiyindaxiaojie@gmail.com">gyl</a>
- * @since 2.4.x
- */
 @RequiredArgsConstructor
 @Service
 public class UserDomainService {
 
 	private final UserGateway userGateway;
+	private final UserAbility userAbility;
 
-	/**
-	 * 注册用户
-	 *
-	 * @param loginStr    账号
-	 * @param emailStr    邮箱
-	 * @param passwordStr 密码
-	 * @return 用户实体
-	 */
 	public User registerUser(String loginStr, String emailStr, String passwordStr) {
 		Login login = Login.of(loginStr);
 		Email email = Email.of(emailStr);
+		ClientAssert.isTrue(userAbility.validatePasswordStrength(passwordStr),
+			"USER-REG-003", "Password rejected by extension strategy");
 		Password password = Password.fromPlainText(passwordStr);
 
 		ClientAssert.isTrue(!userGateway.existsByLogin(login),
-			"USER-REG-001", "账号已存在");
+			"USER-REG-001", "Login already exists");
 		ClientAssert.isTrue(!userGateway.existsByEmail(email),
-			"USER-REG-002", "邮箱已被注册");
+			"USER-REG-002", "Email already exists");
 
-		return User.create(login, email, password);
+		User user = User.create(login, email, password);
+		userAbility.validateRegister(user);
+		userAbility.afterRegister(user);
+		return user;
 	}
 
-	/**
-	 * 用户登录验证
-	 *
-	 * @param loginStr      账号
-	 * @param plainPassword 明文密码
-	 * @return 用户实体
-	 */
 	public User authenticate(String loginStr, String plainPassword) {
 		Login login = Login.of(loginStr);
 
 		User user = userGateway.findByLogin(login);
-		ClientAssert.notNull(user, "AUTH-001", "用户不存在");
-		ClientAssert.isTrue(user.canLogin(), "AUTH-002", "用户状态异常，无法登录");
-		ClientAssert.isTrue(user.verifyPassword(plainPassword), "AUTH-003", "密码错误");
+		ClientAssert.notNull(user, "AUTH-001", "User does not exist");
+		ClientAssert.isTrue(user.canLogin(), "AUTH-002", "User status does not allow login");
+		ClientAssert.isTrue(user.verifyPassword(plainPassword), "AUTH-003", "Password is incorrect");
 
 		return user;
 	}
 
-	/**
-	 * 修改邮箱
-	 *
-	 * @param user        用户实体
-	 * @param newEmailStr 新邮箱
-	 */
 	public void changeEmail(User user, String newEmailStr) {
 		Email newEmail = Email.of(newEmailStr);
 
 		ClientAssert.isTrue(!userGateway.existsByEmailExcludeUser(newEmail, user.getId()),
-			"USER-EMAIL-001", "该邮箱已被其他用户使用");
+			"USER-EMAIL-001", "Email is already used by another user");
 
 		user.changeEmail(newEmail);
 	}

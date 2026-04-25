@@ -1,17 +1,17 @@
-# XXL-Job Distributed Task Scheduling
+﻿# XXL-Job Distributed Task Scheduling
 
-## What
+## Overview
 
 XXL-Job is a distributed task scheduling platform open-sourced by Dianping. This project integrates XXL-Job for unified management and scheduling of scheduled tasks.
 
-## Why
+## When to Use
 
 - Distributed Scheduling: Supports cluster deployment with automatic task sharding
 - Visual Management: Web console for task management with CRUD support
 - Rich Scheduling Strategies: Supports Cron, fixed frequency, API trigger, etc.
 - Execution Logs: Real-time viewing of task execution logs
 
-## How
+## Setup
 
 ### 1. Deploy XXL-Job Admin
 
@@ -70,7 +70,7 @@ public class DemoJobHandler {
    - JobHandler: `demoJobHandler`
    - Cron: `0 0/5 * * * ?` (execute every 5 minutes)
 
-## Cases
+## Example Scenarios
 
 ### Case 1: Sharding Task
 
@@ -126,16 +126,17 @@ public void resultJob() {
 }
 ```
 
-## Pitfalls
+## Common Issues
 
 1. **Executor Registration**: Ensure executor AppName matches Admin configuration
 2. **Network Connectivity**: Executor needs to access Admin, and Admin needs to callback executor
 3. **Log Directory**: Ensure `log-path` directory exists and has write permission
 4. **Task Timeout**: Set reasonable timeout for long-running tasks
 
-## Best Practices
+## Recommendations
 
 1. Use sharding tasks to process large data volumes for improved efficiency
 2. Log task execution for easier troubleshooting
 3. Set up task alerts for failure notifications
 4. Set reasonable timeout and retry strategies
+

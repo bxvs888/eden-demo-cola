@@ -1,17 +1,17 @@
-# RocketMQ Message Queue
+﻿# RocketMQ Message Queue
 
-## What
+## Overview
 
 Apache RocketMQ is Alibaba's open-source distributed message middleware. This project integrates RocketMQ for asynchronous messaging, peak shaving, and more.
 
-## Why
+## When to Use
 
 - High Performance: Single machine supports millions of message backlog
 - High Availability: Supports master-slave sync, multi-replica mechanism
 - Rich Features: Supports ordered messages, delayed messages, transactional messages
 - Alibaba Ecosystem: Seamless integration with Dubbo, Nacos, etc.
 
-## How
+## Setup
 
 ### 1. Install RocketMQ
 
@@ -92,7 +92,7 @@ public class DemoConsumer implements RocketMQListener<String> {
 }
 ```
 
-## Cases
+## Example Scenarios
 
 ### Case 1: Delayed Messages
 
@@ -121,17 +121,18 @@ public class OrderConsumer implements RocketMQListener<String> {
 }
 ```
 
-## Pitfalls
+## Common Issues
 
 1. **Idempotent Consumption**: Messages may be delivered multiple times, implement idempotency
 2. **Consume Timeout**: Too short `consume-timeout` causes duplicate consumption
 3. **Ordered Messages**: Ordered consumption blocks queue, handle exceptions carefully
 4. **Namespace**: Use different namespaces for different environments
 
-## Best Practices
+## Recommendations
 
 1. Use sync send for producers to ensure message reliability
 2. Implement idempotency in consumers using unique IDs for deduplication
 3. Set consumer thread count reasonably to avoid message backlog
 4. Use namespace to isolate messages across environments
+
 

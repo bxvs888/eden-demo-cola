@@ -1,19 +1,19 @@
-# Arthas Online Diagnostics
+﻿# Arthas Online Diagnostics
 
-## What
+## Overview
 
 Arthas is an open-source Java diagnostic tool from Alibaba. This project integrates [Arthas](https://github.com/shiyindaxiaojie/arthas) for runtime diagnostics, performance analysis, and troubleshooting.
 
 ![](https://cdn.jsdelivr.net/gh/shiyindaxiaojie/cdn/arthas/arthas-dashboard-overview.png)
 
-## Why
+## When to Use
 
 - Online Diagnostics: Diagnose issues without restarting the application
 - Dynamic Tracing: Real-time view of method calls, parameters, and return values
 - Performance Analysis: Analyze method execution time and flame graphs
 - Hot Fix: Dynamically modify code without redeployment
 
-## How
+## Setup
 
 ### 1. Deploy Arthas Tunnel Server
 
@@ -53,7 +53,7 @@ Or attach directly to the process:
 java -jar arthas-boot.jar
 ```
 
-## Cases
+## Example Scenarios
 
 ### Case 1: Monitor Method Calls
 
@@ -106,16 +106,17 @@ profiler start
 profiler stop --format html
 ```
 
-## Pitfalls
+## Common Issues
 
 1. **Port Conflict**: Use random ports (set to 0) to avoid multi-instance conflicts
 2. **Security Risk**: Restrict Arthas access in production environments
 3. **Performance Impact**: Commands like trace and watch have performance overhead, close them after use
 4. **Hot Fix Risk**: Use redefine command with caution, may cause unexpected issues
 
-## Best Practices
+## Recommendations
 
 1. Use Tunnel Server to manage multiple application instances uniformly
 2. Configure access authentication in production, restrict operation permissions
 3. Exit promptly after diagnostics to avoid continuous performance overhead
 4. Combine with logs and monitoring for comprehensive problem analysis
+

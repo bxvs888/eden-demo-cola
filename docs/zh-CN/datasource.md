@@ -1,16 +1,16 @@
 # 数据源配置
 
-## 是什么（What）
+## 组件说明
 
 数据源（DataSource）是 Java 应用连接数据库的标准接口，本项目集成 HikariCP 连接池，支持 H2 内存数据库和 MySQL 数据库。
 
-## 为什么用（Why）
+## 适用场景
 
 - 连接池管理：复用数据库连接，减少连接创建开销
 - 高性能：HikariCP 是目前性能最好的 JDBC 连接池
 - 灵活配置：支持多种数据库，开发环境使用 H2，生产环境使用 MySQL
 
-## 怎么用（How）
+## 接入步骤
 
 ### 1. H2 内存数据库（开发环境）
 
@@ -61,7 +61,7 @@ spring:
       # connection-init-sql: SET NAMES utf8mb4  # 云数据库乱码解决方案
 ```
 
-## 实战案例（Cases）
+## 示例场景
 
 ### 案例一：开发环境快速启动
 
@@ -92,17 +92,18 @@ spring:
       maximumPoolSize: 20
 ```
 
-## 避坑指南（Pitfalls）
+## 常见问题
 
 1. **连接泄漏**：确保使用 try-with-resources 或框架管理连接，避免连接泄漏
 2. **连接池大小**：`maximumPoolSize` 不宜过大，一般为 CPU 核心数 * 2 + 磁盘数
 3. **超时配置**：`maxLifetime` 应小于数据库的 `wait_timeout`，避免使用已关闭的连接
 4. **字符编码**：云数据库可能出现乱码，使用 `connection-init-sql: SET NAMES utf8mb4`
 
-## 最佳实践（Best Practices）
+## 使用建议
 
 1. 开发环境使用 H2 内存数据库，快速启动无需依赖
 2. 使用环境变量管理敏感配置（用户名、密码）
 3. 根据业务负载合理配置连接池参数
 4. 开启连接池监控，及时发现连接泄漏问题
+
 

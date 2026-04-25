@@ -1,16 +1,16 @@
-# Data Source Configuration
+﻿# Data Source Configuration
 
-## What
+## Overview
 
 DataSource is the standard Java interface for database connections. This project integrates HikariCP connection pool, supporting H2 in-memory database and MySQL database.
 
-## Why
+## When to Use
 
 - Connection Pool Management: Reuse database connections, reduce connection creation overhead
 - High Performance: HikariCP is currently the best performing JDBC connection pool
 - Flexible Configuration: Supports multiple databases, H2 for development, MySQL for production
 
-## How
+## Setup
 
 ### 1. H2 In-memory Database (Development)
 
@@ -61,7 +61,7 @@ spring:
       # connection-init-sql: SET NAMES utf8mb4  # Cloud database encoding fix
 ```
 
-## Cases
+## Example Scenarios
 
 ### Case 1: Quick Start in Development
 
@@ -92,17 +92,18 @@ spring:
       maximumPoolSize: 20
 ```
 
-## Pitfalls
+## Common Issues
 
 1. **Connection Leak**: Use try-with-resources or framework-managed connections
 2. **Pool Size**: `maximumPoolSize` should not be too large, typically CPU cores * 2 + disk count
 3. **Timeout Configuration**: `maxLifetime` should be less than database `wait_timeout`
 4. **Character Encoding**: Use `connection-init-sql: SET NAMES utf8mb4` for cloud databases
 
-## Best Practices
+## Recommendations
 
 1. Use H2 in-memory database for quick startup in development
 2. Use environment variables for sensitive configurations (username, password)
 3. Configure connection pool parameters based on business load
 4. Enable connection pool monitoring to detect connection leaks
+
 

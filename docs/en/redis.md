@@ -1,29 +1,31 @@
 # Redis Cache
 
-## What
+In this project, Redis mainly serves two purposes: caching hot data and providing lightweight distributed coordination such as simple locks.
 
-Redis is a high-performance key-value store database. This project integrates Redis for data caching, distributed locks, and more.
+## When to Use
 
-## Why
+Redis is a good fit when you are dealing with situations like these:
 
-- Performance Improvement: Reduce database access pressure
-- Distributed Cache: Share cache data across multiple instances
-- Rich Data Structures: Supports String, Hash, List, Set, ZSet, etc.
+- reads are frequent and direct database access is too expensive
+- multiple service instances need to share cached data
+- you need lightweight distributed locking to prevent duplicate work
+- some short-lived state should live in an in-memory store
 
-## How
+If you are only trying to get the project running locally, you can postpone Redis until the base flow is already working.
 
-### 1. Install Redis
+## Setup
+
+### 1. Prepare a Redis instance
+
+A quick local option is Docker:
 
 ```bash
-# Docker method
 docker run -d --name redis -p 6379:6379 redis:latest
-
-# Or use official Redis installation package
 ```
 
-### 2. Enable Configuration
+### 2. Enable project configuration
 
-Modify `application-dev.yml`:
+Update `application-dev.yml`:
 
 ```yaml
 spring:
@@ -42,22 +44,25 @@ spring:
         max-wait: -1
 ```
 
-### 3. Usage Example
+If your local Redis does not use a password, adjust `password` accordingly.
+
+### 3. Verify connectivity with minimal code
 
 ```java
 @Autowired
 private StringRedisTemplate redisTemplate;
 
-// Set cache
 redisTemplate.opsForValue().set("key", "value", 30, TimeUnit.MINUTES);
-
-// Get cache
 String value = redisTemplate.opsForValue().get("key");
 ```
 
-## Cases
+If both write and read succeed, Redis is connected correctly.
 
-### Case 1: Cache User Information
+## Example Scenarios
+
+### Scenario 1: Cache user information
+
+This fits read-heavy queries where short-lived caching is acceptable:
 
 ```java
 @Cacheable(value = "user", key = "#id")
@@ -66,7 +71,9 @@ public User getUserById(Long id) {
 }
 ```
 
-### Case 2: Distributed Lock
+### Scenario 2: Use a simple distributed lock
+
+This is suitable for short transactions or idempotency protection:
 
 ```java
 Boolean locked = redisTemplate.opsForValue()
@@ -80,15 +87,18 @@ if (Boolean.TRUE.equals(locked)) {
 }
 ```
 
-## Pitfalls
+If the lock protects a critical business flow, do not treat this minimal sample as a production-ready locking strategy. Consider timeout handling, renewal, and delete-safety as well.
 
-1. **Connection Pool Configuration**: Configure pool size based on concurrency
-2. **Timeout Settings**: Set reasonable timeout to avoid blocking
-3. **Password Security**: Always set password in production
+## Common Issues
 
-## Best Practices
+1. **Cannot connect to Redis**: verify port, password, and database index first
+2. **Pool size is too small under load**: adjust Lettuce pool settings based on actual concurrency
+3. **Cache hit rate is low**: review key design and expiration settings
+4. **Locks fail occasionally**: check whether business execution time exceeds the lock timeout
 
-1. Use Lettuce connection pool (default), better performance than Jedis
-2. Set reasonable cache expiration time to avoid memory overflow
-3. Use Pipeline for batch operations to improve performance
+## Recommendations
 
+1. In local development, focus on basic connectivity before tuning the pool
+2. Always set expiration times for cache entries to avoid unbounded growth
+3. Use business-prefixed keys for easier troubleshooting and management
+4. Do not use cache results alone as the final source of truth for strongly consistent business flows

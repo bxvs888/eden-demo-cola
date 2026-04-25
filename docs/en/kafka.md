@@ -1,17 +1,17 @@
-# Kafka Message Engine
+﻿# Kafka Message Engine
 
-## What
+## Overview
 
 Apache Kafka is a high-throughput distributed messaging system. This project integrates Spring Kafka for message production and consumption.
 
-## Why
+## When to Use
 
 - High Throughput: Single machine can process millions of messages per second
 - Persistence: Messages persisted to disk, supports message replay
 - Distributed: Native support for partitioning and replication
 - Rich Ecosystem: Seamless integration with big data ecosystem (Spark, Flink)
 
-## How
+## Setup
 
 ### 1. Install Kafka
 
@@ -96,7 +96,7 @@ public class DemoConsumer {
 }
 ```
 
-## Cases
+## Example Scenarios
 
 ### Case 1: Batch Consumption
 
@@ -126,17 +126,18 @@ public void consumePartition(ConsumerRecord<String, String> record) {
 }
 ```
 
-## Pitfalls
+## Common Issues
 
 1. **Auto Commit**: Disable `enable-auto-commit`, use manual commit to avoid message loss
 2. **Consumer Group Instances**: Instance count cannot exceed partition count
 3. **Rebalancing**: Consumer join/leave triggers rebalancing
 4. **Message Order**: Only messages within same partition are ordered
 
-## Best Practices
+## Recommendations
 
 1. Use manual commit mode to ensure message processing completion before commit
 2. Set partition count >= consumer instance count
 3. Use key to ensure messages with same key go to same partition
 4. Batch consumption improves throughput, but watch single batch processing time
+
 

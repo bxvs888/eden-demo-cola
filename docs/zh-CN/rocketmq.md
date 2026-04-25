@@ -1,17 +1,17 @@
 # RocketMQ 消息队列
 
-## 是什么（What）
+## 组件说明
 
 Apache RocketMQ 是阿里巴巴开源的分布式消息中间件，本项目集成 RocketMQ 实现异步消息、削峰填谷等功能。
 
-## 为什么用（Why）
+## 适用场景
 
 - 高性能：单机支持百万级消息堆积
 - 高可用：支持主从同步、多副本机制
 - 丰富特性：支持顺序消息、延迟消息、事务消息
 - 阿里生态：与 Dubbo、Nacos 等组件无缝集成
 
-## 怎么用（How）
+## 接入步骤
 
 ### 1. 安装 RocketMQ
 
@@ -92,7 +92,7 @@ public class DemoConsumer implements RocketMQListener<String> {
 }
 ```
 
-## 实战案例（Cases）
+## 示例场景
 
 ### 案例一：延迟消息
 
@@ -121,17 +121,18 @@ public class OrderConsumer implements RocketMQListener<String> {
 }
 ```
 
-## 避坑指南（Pitfalls）
+## 常见问题
 
 1. **消费幂等**：消息可能重复投递，消费端必须实现幂等
 2. **消费超时**：`consume-timeout` 设置过短会导致消息重复消费
 3. **顺序消息**：顺序消费会阻塞队列，注意处理异常
 4. **命名空间**：不同环境使用不同 namespace 隔离消息
 
-## 最佳实践（Best Practices）
+## 使用建议
 
 1. 生产者使用同步发送确保消息可靠性
 2. 消费者实现幂等，使用唯一 ID 去重
 3. 合理设置消费线程数，避免消费积压
 4. 使用 namespace 隔离不同环境的消息
+
 

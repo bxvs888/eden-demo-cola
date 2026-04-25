@@ -1,19 +1,19 @@
 # Arthas 在线诊断
 
-## 是什么（What）
+## 组件说明
 
 Arthas 是阿里巴巴开源的 Java 诊断工具，本项目集成 [Arthas](https://github.com/shiyindaxiaojie/arthas) 实现运行时诊断、性能分析和问题排查。
 
 ![](https://cdn.jsdelivr.net/gh/shiyindaxiaojie/cdn/arthas/arthas-dashboard-overview.png)
 
-## 为什么用（Why）
+## 适用场景
 
 - 在线诊断：无需重启应用即可诊断问题
 - 动态追踪：实时查看方法调用、参数、返回值
 - 性能分析：分析方法耗时、火焰图
 - 热修复：动态修改代码，无需重新部署
 
-## 怎么用（How）
+## 接入步骤
 
 ### 1. 部署 Arthas Tunnel Server
 
@@ -53,7 +53,7 @@ http://localhost:7777/
 java -jar arthas-boot.jar
 ```
 
-## 实战案例（Cases）
+## 示例场景
 
 ### 案例一：查看方法调用
 
@@ -106,17 +106,18 @@ profiler start
 profiler stop --format html
 ```
 
-## 避坑指南（Pitfalls）
+## 常见问题
 
 1. **端口冲突**：使用随机端口（设置为 0）避免多实例冲突
 2. **安全风险**：生产环境限制 Arthas 访问权限
 3. **性能影响**：trace、watch 等命令有性能开销，使用后及时关闭
 4. **热修复风险**：redefine 命令谨慎使用，可能导致不可预期问题
 
-## 最佳实践（Best Practices）
+## 使用建议
 
 1. 使用 Tunnel Server 统一管理多个应用实例
 2. 生产环境配置访问认证，限制操作权限
 3. 诊断完成后及时退出，避免持续性能开销
 4. 结合日志和监控，综合分析问题
+
 

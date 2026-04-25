@@ -24,14 +24,12 @@ import org.ylzl.eden.demo.app.menu.assembler.MenuAssembler;
 import org.ylzl.eden.demo.client.menu.dto.MenuTreeDTO;
 import org.ylzl.eden.demo.client.user.dto.query.UserMenusQry;
 import org.ylzl.eden.demo.domain.menu.entity.Menu;
-import org.ylzl.eden.demo.domain.menu.gateway.MenuGateway;
-import org.ylzl.eden.demo.domain.role.entity.Role;
-import org.ylzl.eden.demo.domain.role.gateway.RoleGateway;
+import org.ylzl.eden.demo.domain.rbac.domainservice.RbacDomainService;
 import org.ylzl.eden.demo.domain.user.gateway.UserGateway;
 import org.ylzl.eden.spring.framework.error.ClientAssert;
 
-import java.util.*;
-import java.util.stream.Collectors;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * 查询用户菜单执行器
@@ -45,45 +43,17 @@ import java.util.stream.Collectors;
 public class UserMenusQryExe {
 
 	private final UserGateway userGateway;
-	private final RoleGateway roleGateway;
-	private final MenuGateway menuGateway;
+	private final RbacDomainService rbacDomainService;
 	private final MenuAssembler menuAssembler;
 
-	/**
-	 * 执行查询用户菜单
-	 *
-	 * @param qry 查询条件
-	 * @return 用户菜单树列表
-	 */
 	public MultiResponse<MenuTreeDTO> execute(UserMenusQry qry) {
 		ClientAssert.isTrue(userGateway.findById(qry.getUserId()).isPresent(), "USER-404", "用户不存在");
-
-		// 获取用户的所有角色
-		List<Role> roles = userGateway.findRolesByUserId(qry.getUserId());
-		if (roles.isEmpty()) {
+		List<Long> roleIds = userGateway.findRoleIdsByUserId(qry.getUserId());
+		if (roleIds == null || roleIds.isEmpty()) {
 			return MultiResponse.of(Collections.emptyList());
 		}
 
-		// 获取所有角色的菜单ID（去重）
-		Set<Long> menuIds = new HashSet<>();
-		for (Role role : roles) {
-			if (role.isEnabled()) {
-				List<Long> roleMenuIds = roleGateway.findMenuIdsByRoleId(role.getId());
-				menuIds.addAll(roleMenuIds);
-			}
-		}
-
-		if (menuIds.isEmpty()) {
-			return MultiResponse.of(Collections.emptyList());
-		}
-
-		// 获取菜单并构建树
-		List<Menu> menus = menuGateway.findByIds(new ArrayList<>(menuIds));
-		// 只返回可见的菜单
-		menus = menus.stream()
-			.filter(Menu::isVisible)
-			.collect(Collectors.toList());
-
-		return MultiResponse.of(menuAssembler.buildTree(menus));
+		List<Menu> menus = rbacDomainService.getUserMenus(roleIds);
+		return MultiResponse.of(menuAssembler.toTreeDTOList(rbacDomainService.buildMenuTree(menus)));
 	}
 }

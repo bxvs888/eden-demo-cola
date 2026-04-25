@@ -1,17 +1,17 @@
-# Dynamic-MQ Dynamic Message Queue
+﻿# Dynamic-MQ Dynamic Message Queue
 
-## What
+## Overview
 
 Dynamic-MQ is a dynamic message queue component encapsulated in this project, supporting dynamic switching between RocketMQ and Kafka, providing unified abstraction for message middleware.
 
-## Why
+## When to Use
 
 - Unified Abstraction: Shield differences between message middleware
 - Dynamic Switching: Switch message middleware via configuration without code changes
 - Smooth Migration: Easier migration from RocketMQ to Kafka or vice versa
 - Multi-environment Adaptation: Different environments can use different message middleware
 
-## How
+## Setup
 
 ### 1. Enable Configuration
 
@@ -93,7 +93,7 @@ public void sendWithKey(String topic, String key, String message) {
 }
 ```
 
-## Cases
+## Example Scenarios
 
 ### Case 1: Development Environment with RocketMQ
 
@@ -141,17 +141,18 @@ public void sendToKafka(String message) {
 }
 ```
 
-## Pitfalls
+## Common Issues
 
 1. **Feature Differences**: RocketMQ and Kafka features are not identical (delayed messages, transactional messages)
 2. **Consumer Mode**: Consumers need reconfiguration after switching message queue
 3. **Message Format**: Ensure consistent message serialization
 4. **Topic Naming**: Different message queues may have different topic naming conventions
 
-## Best Practices
+## Recommendations
 
 1. Use unified message format for easier message queue switching
 2. Avoid using proprietary features of specific message queues
 3. Implement idempotency in consumers to handle message duplication
 4. Use configuration files to distinguish message queues across environments
+
 

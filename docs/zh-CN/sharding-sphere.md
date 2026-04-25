@@ -1,17 +1,17 @@
 # ShardingSphere 分库分表
 
-## 是什么（What）
+## 组件说明
 
 Apache ShardingSphere 是一款分布式数据库中间件，本项目集成 ShardingSphere-JDBC 实现分库分表、读写分离等功能。
 
-## 为什么用（Why）
+## 适用场景
 
 - 分库分表：解决单库数据量过大的性能瓶颈
 - 读写分离：主库写、从库读，提升查询性能
 - 分布式事务：支持 XA、BASE 等分布式事务模式
 - 透明化接入：对应用代码无侵入，兼容 JDBC 规范
 
-## 怎么用（How）
+## 接入步骤
 
 ### 1. 开启配置
 
@@ -73,7 +73,7 @@ spring:
               algorithm-expression: t_order_$->{order_id % 2}
 ```
 
-## 实战案例（Cases）
+## 示例场景
 
 ### 案例一：读写分离配置
 
@@ -124,17 +124,18 @@ spring:
               read-data-source-names: slave1,slave2
 ```
 
-## 避坑指南（Pitfalls）
+## 常见问题
 
 1. **Liquibase 兼容性**：ShardingSphere 5.x 与 Liquibase 存在兼容性问题，建议分开使用
 2. **分片键选择**：分片键应选择查询频繁且分布均匀的字段
 3. **跨库查询**：避免跨库 JOIN 查询，性能较差
 4. **事务边界**：分布式事务有性能开销，合理设计事务边界
 
-## 最佳实践（Best Practices）
+## 使用建议
 
 1. 分片键选择高频查询字段，减少跨分片查询
 2. 预估数据增长，合理规划分片数量
 3. 使用雪花算法生成分布式 ID
 4. 读写分离场景注意主从延迟问题
+
 

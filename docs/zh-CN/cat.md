@@ -1,19 +1,19 @@
 # CAT 应用监控
 
-## 是什么（What）
+## 组件说明
 
 CAT（Central Application Tracking）是大众点评开源的实时应用监控平台，本项目集成 [CAT](https://github.com/shiyindaxiaojie/cat) 实现事务追踪、性能分析和问题诊断。
 
 ![](https://cdn.jsdelivr.net/gh/shiyindaxiaojie/cdn/cat/tracing.png)
 
-## 为什么用（Why）
+## 适用场景
 
 - 实时监控：秒级监控数据展示
 - 全链路追踪：通过 TraceId 串联完整调用链
 - 性能分析：HTTP、RPC、SQL、Cache 执行时间分析
 - 问题诊断：快速定位性能瓶颈和异常
 
-## 怎么用（How）
+## 接入步骤
 
 ### 1. 部署 CAT Server
 
@@ -68,7 +68,7 @@ public void doSomething() {
 }
 ```
 
-## 实战案例（Cases）
+## 示例场景
 
 ### 案例一：HTTP 请求追踪
 
@@ -108,17 +108,18 @@ Cat.logRemoteCallClient(context);
 Cat.logRemoteCallServer(context);
 ```
 
-## 避坑指南（Pitfalls）
+## 常见问题
 
 1. **配置目录**：确保 `cat.home` 目录存在且有写权限
 2. **服务端连接**：确保应用能访问 CAT 服务端的 TCP 和 HTTP 端口
 3. **事务完成**：Transaction 必须调用 `complete()`，否则数据不完整
 4. **性能影响**：高并发场景注意 CAT 客户端的性能开销
 
-## 最佳实践（Best Practices）
+## 使用建议
 
 1. 使用 `trace-mode` 自动埋点，减少手动编码
 2. 关键业务添加自定义埋点，便于问题定位
 3. 通过 TraceId 串联完整调用链
 4. 定期查看 Problem 报表，及时发现异常
+
 

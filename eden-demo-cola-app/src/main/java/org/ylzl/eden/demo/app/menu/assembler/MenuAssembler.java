@@ -20,18 +20,13 @@ import org.springframework.stereotype.Component;
 import org.ylzl.eden.demo.client.menu.dto.MenuDTO;
 import org.ylzl.eden.demo.client.menu.dto.MenuTreeDTO;
 import org.ylzl.eden.demo.domain.menu.entity.Menu;
+import org.ylzl.eden.demo.domain.rbac.domainservice.RbacDomainService;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-/**
- * 菜单领域组装器
- *
- * @author <a href="mailto:shiyindaxiaojie@gmail.com">gyl</a>
- * @since 1.0.0
- */
 @Component
 public class MenuAssembler {
 
@@ -55,9 +50,7 @@ public class MenuAssembler {
 		if (menus == null) {
 			return new ArrayList<>();
 		}
-		return menus.stream()
-			.map(this::toDTO)
-			.collect(Collectors.toList());
+		return menus.stream().map(this::toDTO).collect(Collectors.toList());
 	}
 
 	public List<MenuTreeDTO> buildTree(List<Menu> menus) {
@@ -75,6 +68,13 @@ public class MenuAssembler {
 			.collect(Collectors.toList());
 	}
 
+	public List<MenuTreeDTO> toTreeDTOList(List<RbacDomainService.MenuTreeNode> nodes) {
+		if (nodes == null || nodes.isEmpty()) {
+			return new ArrayList<>();
+		}
+		return nodes.stream().map(this::toTreeDTO).collect(Collectors.toList());
+	}
+
 	private MenuTreeDTO buildTreeNode(Menu menu, Map<Long, List<Menu>> childrenMap) {
 		MenuTreeDTO dto = MenuTreeDTO.builder()
 			.id(menu.getId())
@@ -89,10 +89,21 @@ public class MenuAssembler {
 
 		List<Menu> children = childrenMap.get(menu.getId());
 		if (children != null && !children.isEmpty()) {
-			dto.setChildren(children.stream()
-				.map(c -> buildTreeNode(c, childrenMap))
-				.collect(Collectors.toList()));
+			dto.setChildren(children.stream().map(c -> buildTreeNode(c, childrenMap)).collect(Collectors.toList()));
 		}
+		return dto;
+	}
+
+	private MenuTreeDTO toTreeDTO(RbacDomainService.MenuTreeNode node) {
+		MenuTreeDTO dto = MenuTreeDTO.builder()
+			.id(node.getId())
+			.name(node.getName())
+			.path(node.getPath())
+			.icon(node.getIcon())
+			.component(node.getComponent())
+			.sort(node.getSort())
+			.build();
+		dto.setChildren(toTreeDTOList(node.getChildren()));
 		return dto;
 	}
 }

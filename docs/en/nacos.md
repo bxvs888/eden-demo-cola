@@ -1,16 +1,16 @@
-# Nacos Registry & Configuration Center
+﻿# Nacos Registry & Configuration Center
 
-## What
+## Overview
 
 Nacos is Alibaba's open-source service discovery, configuration management, and service management platform. This project integrates Nacos for service registration/discovery and dynamic configuration management.
 
-## Why
+## When to Use
 
 - Service Registration & Discovery: Service governance in microservices architecture
 - Dynamic Configuration Management: Hot configuration updates without restarting
 - Supports Log4j2 dynamic configuration refresh
 
-## How
+## Setup
 
 ### 1. Install Nacos
 
@@ -56,7 +56,7 @@ log4j2:
     data-id: log4j2.yml
 ```
 
-## Cases
+## Example Scenarios
 
 ### Case 1: Multi-environment Configuration Isolation
 
@@ -84,15 +84,16 @@ spring:
         group: eden  # Application group
 ```
 
-## Pitfalls
+## Common Issues
 
 1. **Namespace**: Ensure namespace is created in Nacos console
 2. **Network Connectivity**: Ensure application can access Nacos server
 3. **Configuration Format**: `file-extension` must match the format in Nacos
 
-## Best Practices
+## Recommendations
 
 1. Use namespace to isolate environments, group to isolate application groups
 2. Use Nacos encryption for sensitive configurations (passwords, etc.)
 3. Verify configuration changes in test environment first
+
 

@@ -1,17 +1,17 @@
-# Liquibase Database Version Management
+﻿# Liquibase Database Version Management
 
-## What
+## Overview
 
 Liquibase is an open-source database change management tool. This project integrates Liquibase for database version control and automatic migration.
 
-## Why
+## When to Use
 
 - Version Control: Manage database changes like code
 - Automatic Migration: Execute pending change scripts on application startup
 - Multi-environment Support: Same scripts work across development, testing, and production
 - Rollback Capability: Support change rollback to reduce release risk
 
-## How
+## Setup
 
 ### 1. Enable Configuration
 
@@ -79,7 +79,7 @@ databaseChangeLog:
                   type: datetime
 ```
 
-## Cases
+## Example Scenarios
 
 ### Case 1: Add New Table
 
@@ -135,17 +135,18 @@ databaseChangeLog:
             relativeToChangelogFile: false
 ```
 
-## Pitfalls
+## Common Issues
 
 1. **Unique changeSet ID**: changeSet ID must be unique per author
 2. **Don't Modify Executed Changes**: Don't modify already executed changeSets
 3. **ShardingSphere Compatibility**: ShardingSphere 5.x has compatibility issues with Liquibase
 4. **Production Caution**: Disable auto-execution in production, use manual migration
 
-## Best Practices
+## Recommendations
 
 1. Use separate changelog files for each version for easier management
 2. Keep changeSet granularity small, one changeSet does one thing
 3. Add meaningful comments to changeSets
 4. Use `runOnChange: true` for repeatable scripts (views, stored procedures)
+
 

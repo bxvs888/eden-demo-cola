@@ -1,17 +1,17 @@
-# Dynamic-TP Dynamic Thread Pool
+﻿# Dynamic-TP Dynamic Thread Pool
 
-## What
+## Overview
 
 Dynamic-TP is a dynamic thread pool component based on configuration center. This project integrates Dynamic-TP for dynamic thread pool parameter adjustment and monitoring alerts.
 
-## Why
+## When to Use
 
 - Dynamic Tuning: Adjust thread pool parameters without restarting the application
 - Real-time Monitoring: Real-time monitoring of thread pool status
 - Alert Notification: Timely alerts when thread pool anomalies occur
 - Multi-framework Support: Supports Dubbo, RocketMQ, Undertow and other thread pools
 
-## How
+## Setup
 
 ### 1. Enable Configuration
 
@@ -96,7 +96,7 @@ public void asyncTask() {
 }
 ```
 
-## Cases
+## Example Scenarios
 
 ### Case 1: Dynamically Adjust Thread Pool Parameters
 
@@ -146,16 +146,17 @@ spring:
 
 Combined with Prometheus + Grafana for visual monitoring.
 
-## Pitfalls
+## Common Issues
 
 1. **Thread Pool Naming**: Use `appName#poolName` format for easy identification
 2. **Queue Type**: `VariableLinkedBlockingQueue` supports dynamic capacity adjustment
 3. **Rejection Policy**: Choose appropriate rejection policy based on business needs
 4. **Monitor Interval**: `monitorInterval` should not be too small to avoid performance overhead
 
-## Best Practices
+## Recommendations
 
 1. Create separate thread pools for different business scenarios
 2. Configure alert notifications to detect thread pool anomalies promptly
 3. Combine with monitoring systems to analyze thread pool status
 4. Dynamically adjust thread pool parameters based on business load
+

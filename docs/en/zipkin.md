@@ -1,17 +1,17 @@
-# Zipkin Distributed Tracing
+﻿# Zipkin Distributed Tracing
 
-## What
+## Overview
 
 Zipkin is a distributed tracing system open-sourced by Twitter. This project integrates Spring Cloud Sleuth + Zipkin for microservice call chain tracing.
 
-## Why
+## When to Use
 
 - Spring Ecosystem: Seamless integration with Spring Cloud
 - Auto Instrumentation: Sleuth automatically adds tracing for HTTP, RPC, MQ, etc.
 - Multiple Reporting Methods: Supports HTTP, Kafka, RabbitMQ reporting
 - Lightweight: Simple deployment with low resource consumption
 
-## How
+## Setup
 
 ### 1. Deploy Zipkin
 
@@ -79,7 +79,7 @@ public void doSomething() {
 }
 ```
 
-## Cases
+## Example Scenarios
 
 ### Case 1: HTTP Reporting
 
@@ -122,16 +122,17 @@ docker run -d --name zipkin \
 <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%X{traceId}] [%thread] %-5level %logger{36} - %msg%n</pattern>
 ```
 
-## Pitfalls
+## Common Issues
 
 1. **Sampling Rate**: Do not use 100% sampling rate in production
 2. **Async Configuration**: `spring.sleuth.async.configurer.enabled` conflicts with higher Spring versions
 3. **Kafka Configuration**: When using Kafka reporting, ensure Zipkin server is also configured with Kafka
 4. **Storage Backend**: Use Elasticsearch or MySQL for storage in production
 
-## Best Practices
+## Recommendations
 
 1. Use Kafka reporting to avoid HTTP reporting performance overhead
 2. Set sampling rate to 0.1 (10%) or lower in production
 3. Configure log output with TraceId for log correlation
 4. Use Elasticsearch for storage to support large-scale data queries
+

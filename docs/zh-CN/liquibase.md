@@ -1,17 +1,17 @@
 # Liquibase 数据库版本管理
 
-## 是什么（What）
+## 组件说明
 
 Liquibase 是开源的数据库变更管理工具，本项目集成 Liquibase 实现数据库版本控制和自动迁移。
 
-## 为什么用（Why）
+## 适用场景
 
 - 版本控制：像管理代码一样管理数据库变更
 - 自动迁移：应用启动时自动执行未执行的变更脚本
 - 多环境支持：同一套脚本适用于开发、测试、生产环境
 - 回滚能力：支持变更回滚，降低发布风险
 
-## 怎么用（How）
+## 接入步骤
 
 ### 1. 开启配置
 
@@ -79,7 +79,7 @@ databaseChangeLog:
                   type: datetime
 ```
 
-## 实战案例（Cases）
+## 示例场景
 
 ### 案例一：添加新表
 
@@ -135,17 +135,18 @@ databaseChangeLog:
             relativeToChangelogFile: false
 ```
 
-## 避坑指南（Pitfalls）
+## 常见问题
 
 1. **changeSet ID 唯一**：同一作者的 changeSet ID 必须唯一，否则会报错
 2. **已执行的变更不可修改**：已执行的 changeSet 不要修改，否则校验失败
 3. **ShardingSphere 兼容性**：ShardingSphere 5.x 与 Liquibase 存在兼容性问题
 4. **生产环境谨慎**：生产环境建议关闭自动执行，使用手动迁移
 
-## 最佳实践（Best Practices）
+## 使用建议
 
 1. 每个版本使用独立的 changelog 文件，便于管理
 2. changeSet 粒度要小，一个 changeSet 只做一件事
 3. 为 changeSet 添加有意义的注释
 4. 使用 `runOnChange: true` 标记可重复执行的脚本（如视图、存储过程）
+
 

@@ -1,19 +1,19 @@
-# CAT Application Monitoring
+﻿# CAT Application Monitoring
 
-## What
+## Overview
 
 CAT (Central Application Tracking) is Dianping's open-source real-time application monitoring platform. This project integrates [CAT](https://github.com/shiyindaxiaojie/cat) for transaction tracing, performance analysis, and problem diagnosis.
 
 ![](https://cdn.jsdelivr.net/gh/shiyindaxiaojie/cdn/cat/tracing.png)
 
-## Why
+## When to Use
 
 - Real-time Monitoring: Second-level monitoring data display
 - Full-link Tracing: Connect complete call chain through TraceId
 - Performance Analysis: HTTP, RPC, SQL, Cache execution time analysis
 - Problem Diagnosis: Quickly locate performance bottlenecks and exceptions
 
-## How
+## Setup
 
 ### 1. Deploy CAT Server
 
@@ -68,7 +68,7 @@ public void doSomething() {
 }
 ```
 
-## Cases
+## Example Scenarios
 
 ### Case 1: HTTP Request Tracing
 
@@ -108,17 +108,18 @@ Cat.logRemoteCallClient(context);
 Cat.logRemoteCallServer(context);
 ```
 
-## Pitfalls
+## Common Issues
 
 1. **Config Directory**: Ensure `cat.home` directory exists and is writable
 2. **Server Connection**: Ensure application can access CAT server TCP and HTTP ports
 3. **Transaction Completion**: Transaction must call `complete()`, otherwise data is incomplete
 4. **Performance Impact**: Watch CAT client performance overhead in high-concurrency scenarios
 
-## Best Practices
+## Recommendations
 
 1. Use `trace-mode` for auto-instrumentation to reduce manual coding
 2. Add custom instrumentation for critical business for easier problem location
 3. Connect complete call chain through TraceId
 4. Regularly check Problem reports to discover exceptions early
+
 

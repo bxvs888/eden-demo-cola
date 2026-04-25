@@ -1,60 +1,78 @@
 # 快速开始
 
-## 是什么（What）
+如果你只想先把项目跑起来，按这篇文档走就够了。
 
-COLA（Clean Object-oriented Layered Architecture）是阿里巴巴开源的应用架构，本项目是基于 COLA 架构的最佳实践示例，集成了企业级开发常用的组件和配置。
+## 你会得到什么
 
-## 为什么用（Why）
+完成下面步骤后，你可以：
 
-- 整洁的分层架构，降低系统复杂度
-- 融合 DDD、CQRS、SOLID 等设计思想
-- 开箱即用的组件集成方案
-- 完善的配置示例和文档
+- 在本地成功构建 `eden-demo-cola`
+- 启动示例应用
+- 通过一个简单接口验证项目已正常运行
+- 了解后续应该先看哪些组件文档
 
-## 怎么用（How）
+## 开始前先确认
 
 ### 环境要求
 
-- JDK 1.8+（2.4.x 分支）/ JDK 11+（2.7.x 分支）/ JDK 17+（3.0.x 分支）
+- JDK 1.8+（`2.4.x` 分支）/ JDK 11+（`2.7.x` 分支）/ JDK 17+（`3.0.x` 分支）
 - Maven 3.6+
 - Git
 
-### 克隆项目
+### 前置依赖
+
+这个项目依赖 `eden-architect`，第一次本地启动前需要先安装它。
+
+## 第一步：拉取代码
 
 ```bash
 git clone https://github.com/shiyindaxiaojie/eden-demo-cola.git
 cd eden-demo-cola
 ```
 
-### 构建项目
+## 第二步：安装依赖项目
 
 ```bash
-# 安装依赖项目
 git clone https://github.com/shiyindaxiaojie/eden-architect.git
 cd eden-architect && mvn install -T 4C -DskipTests
+```
 
-# 构建本项目
+如果这一步没做，后续构建大概率会直接失败。
+
+## 第三步：构建当前项目
+
+```bash
 cd eden-demo-cola && mvn install -T 4C -DskipTests
 ```
 
-### 启动应用
+构建成功后，再进入启动模块。
+
+## 第四步：启动应用
 
 ```bash
 cd eden-demo-cola-start
 mvn spring-boot:run
 ```
 
-或者直接运行 `ColaApplication.java` 启动类。
+也可以直接运行启动类 `ColaApplication.java`。
 
-### 验证启动
+## 第五步：验证是否启动成功
 
-访问 [http://localhost:8081/api/users/1](http://localhost:8081/api/users/1) 验证接口是否正常。
+启动完成后，访问：
 
-## 实战案例（Cases）
+[http://localhost:8081/api/users/1](http://localhost:8081/api/users/1)
 
-### 案例一：本地开发环境
+如果接口可以正常返回，说明最小启动链路已经打通。
 
-默认配置使用 H2 内存数据库，无需额外依赖即可启动：
+## 本地默认配置说明
+
+默认情况下，项目更偏向“先跑起来”的体验：
+
+- 开发环境默认使用 H2 内存数据库
+- 不需要先准备完整的外部中间件
+- 适合先验证工程结构和基础链路
+
+示例配置如下：
 
 ```yaml
 spring:
@@ -63,7 +81,7 @@ spring:
     driver-class-name: org.h2.Driver
 ```
 
-### 案例二：连接 MySQL 数据库
+## 如果你想切到 MySQL
 
 修改 `application-dev.yml`：
 
@@ -76,14 +94,26 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver
 ```
 
-## 避坑指南（Pitfalls）
+切到 MySQL 后，建议再结合 [数据源配置](datasource.md) 和 [Liquibase 数据库版本管理](liquibase.md) 一起看。
 
-1. **依赖问题**：必须先安装 `eden-architect` 项目
-2. **端口冲突**：默认端口 8081，如有冲突请修改 `server.port`
-3. **JDK 版本**：请根据分支选择对应的 JDK 版本
+## 常见问题
 
-## 最佳实践（Best Practices）
+1. **构建直接失败**：通常是还没先安装 `eden-architect`
+2. **8081 端口被占用**：修改 `server.port` 后再启动
+3. **JDK 不兼容**：确认当前分支对应的 JDK 版本
+4. **启动后接口报错**：先检查当前配置文件是否指向了不可用的外部服务
 
-1. 开发环境使用 H2 内存数据库快速启动
-2. 按需开启组件，避免不必要的依赖
-3. 使用 Liquibase 管理数据库变更
+## 下一步看什么
+
+启动成功后，通常按下面顺序继续：
+
+1. [Nacos 注册中心与配置中心](nacos.md)
+2. [数据源配置](datasource.md)
+3. [Redis 缓存](redis.md)
+4. 根据需要选择 MQ、监控或任务调度文档
+
+## 使用建议
+
+1. 先用默认配置把项目跑通，再按需接入外部组件
+2. 每次只新增一种基础设施，方便定位问题
+3. 配置改动后立即做最小验证，不要攒一堆改动一起排查

@@ -72,4 +72,5 @@ log/
 .Spotlight-V100
 .Trashes
 .kiro/**
-.claude
+.claude/**
+.codex/**

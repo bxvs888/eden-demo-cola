@@ -60,7 +60,7 @@ jobs:
                   <repository>
                     <id>github</id>
                     <name>GitHub OWNER Apache Maven Packages</name>
-                    <url>https://maven.pkg.github.com/shiyindaxiaojie/eden-architect</url>
+                    <url>https://maven.pkg.github.com/shiyindaxiaojie/eden-demo-cola</url>
                   </repository>
                 </repositories>
               </profile>

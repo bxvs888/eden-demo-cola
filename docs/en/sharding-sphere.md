@@ -1,17 +1,17 @@
-# ShardingSphere Sharding
+﻿# ShardingSphere Sharding
 
-## What
+## Overview
 
 Apache ShardingSphere is a distributed database middleware. This project integrates ShardingSphere-JDBC for database sharding, read-write splitting, and more.
 
-## Why
+## When to Use
 
 - Database Sharding: Solve performance bottlenecks of single database with large data
 - Read-Write Splitting: Write to master, read from slaves, improve query performance
 - Distributed Transactions: Support XA, BASE distributed transaction modes
 - Transparent Integration: No code intrusion, compatible with JDBC specification
 
-## How
+## Setup
 
 ### 1. Enable Configuration
 
@@ -73,7 +73,7 @@ spring:
               algorithm-expression: t_order_$->{order_id % 2}
 ```
 
-## Cases
+## Example Scenarios
 
 ### Case 1: Read-Write Splitting Configuration
 
@@ -124,17 +124,18 @@ spring:
               read-data-source-names: slave1,slave2
 ```
 
-## Pitfalls
+## Common Issues
 
 1. **Liquibase Compatibility**: ShardingSphere 5.x has compatibility issues with Liquibase
 2. **Sharding Key Selection**: Choose frequently queried and evenly distributed fields
 3. **Cross-database Queries**: Avoid cross-database JOIN queries, poor performance
 4. **Transaction Boundaries**: Distributed transactions have performance overhead
 
-## Best Practices
+## Recommendations
 
 1. Choose high-frequency query fields as sharding keys to reduce cross-shard queries
 2. Estimate data growth and plan shard count reasonably
 3. Use snowflake algorithm for distributed ID generation
 4. Be aware of master-slave delay in read-write splitting scenarios
+
 

@@ -1,17 +1,17 @@
-# Dubbo RPC Framework
+﻿# Dubbo RPC Framework
 
-## What
+## Overview
 
 Apache Dubbo is a high-performance RPC framework open-sourced by Alibaba. This project integrates Dubbo for remote service invocation between microservices.
 
-## Why
+## When to Use
 
 - High Performance: High-performance network communication based on Netty
 - Service Governance: Load balancing, service degradation, cluster fault tolerance
 - Multi-Protocol Support: Supports Dubbo, REST, gRPC and other protocols
 - Rich Ecosystem: Seamless integration with Nacos, Sentinel and other components
 
-## How
+## Setup
 
 ### 1. Enable Configuration
 
@@ -106,7 +106,7 @@ public class OrderService {
 }
 ```
 
-## Cases
+## Example Scenarios
 
 ### Case 1: Load Balancing Configuration
 
@@ -145,16 +145,17 @@ dubbo:
     filter: cat-tracing,cat-consumer
 ```
 
-## Pitfalls
+## Common Issues
 
 1. **Startup Check**: Disable `check: false` in development to avoid startup failure when dependent services are not running
 2. **Timeout Configuration**: Consumer timeout should be less than provider timeout to avoid duplicate calls due to retries
 3. **Serialization**: Interface parameters and return values must implement Serializable
 4. **Annotation Conflict**: Do not use `@EnableDubbo`, use `dubbo.enabled` to control the switch
 
-## Best Practices
+## Recommendations
 
 1. Define interfaces in a separate client module for easy reference by service consumers
 2. Set reasonable timeout and retry counts to avoid avalanche
 3. Use Nacos as registry for service discovery
 4. Integrate CAT or Sentinel for tracing and traffic governance
+

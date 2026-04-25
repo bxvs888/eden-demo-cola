@@ -1,17 +1,17 @@
 # Dubbo RPC 框架
 
-## 是什么（What）
+## 组件说明
 
 Apache Dubbo 是阿里巴巴开源的高性能 RPC 框架，本项目集成 Dubbo 实现微服务间的远程调用。
 
-## 为什么用（Why）
+## 适用场景
 
 - 高性能：基于 Netty 的高性能网络通信
 - 服务治理：负载均衡、服务降级、集群容错
 - 多协议支持：支持 Dubbo、REST、gRPC 等协议
 - 生态丰富：与 Nacos、Sentinel 等组件无缝集成
 
-## 怎么用（How）
+## 接入步骤
 
 ### 1. 开启配置
 
@@ -106,7 +106,7 @@ public class OrderService {
 }
 ```
 
-## 实战案例（Cases）
+## 示例场景
 
 ### 案例一：负载均衡配置
 
@@ -145,17 +145,18 @@ dubbo:
     filter: cat-tracing,cat-consumer
 ```
 
-## 避坑指南（Pitfalls）
+## 常见问题
 
 1. **启动检查**：开发环境建议关闭 `check: false`，避免依赖服务未启动导致启动失败
 2. **超时配置**：消费者超时应小于提供者超时，避免重试导致重复调用
 3. **序列化**：接口参数和返回值必须实现 Serializable
 4. **注解冲突**：不要使用 `@EnableDubbo`，使用 `dubbo.enabled` 控制开关
 
-## 最佳实践（Best Practices）
+## 使用建议
 
 1. 接口定义在独立的 client 模块，便于服务消费者引用
 2. 合理设置超时和重试次数，避免雪崩
 3. 使用 Nacos 作为注册中心，实现服务发现
 4. 集成 CAT 或 Sentinel 实现链路追踪和流量治理
+
 

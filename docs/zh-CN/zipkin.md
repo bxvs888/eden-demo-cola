@@ -1,17 +1,17 @@
 # Zipkin 链路追踪
 
-## 是什么（What）
+## 组件说明
 
 Zipkin 是 Twitter 开源的分布式追踪系统，本项目集成 Spring Cloud Sleuth + Zipkin 实现微服务调用链追踪。
 
-## 为什么用（Why）
+## 适用场景
 
 - Spring 生态：与 Spring Cloud 无缝集成
 - 自动埋点：Sleuth 自动为 HTTP、RPC、MQ 等添加追踪
 - 多种上报方式：支持 HTTP、Kafka、RabbitMQ 上报
 - 轻量级：部署简单，资源占用少
 
-## 怎么用（How）
+## 接入步骤
 
 ### 1. 部署 Zipkin
 
@@ -79,7 +79,7 @@ public void doSomething() {
 }
 ```
 
-## 实战案例（Cases）
+## 示例场景
 
 ### 案例一：HTTP 上报
 
@@ -122,17 +122,18 @@ docker run -d --name zipkin \
 <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%X{traceId}] [%thread] %-5level %logger{36} - %msg%n</pattern>
 ```
 
-## 避坑指南（Pitfalls）
+## 常见问题
 
 1. **采样率**：生产环境不要使用 100% 采样率
 2. **异步配置**：`spring.sleuth.async.configurer.enabled` 与高版本 Spring 冲突
 3. **Kafka 配置**：使用 Kafka 上报时，确保 Zipkin 服务端也配置了 Kafka
 4. **存储后端**：生产环境使用 Elasticsearch 或 MySQL 存储
 
-## 最佳实践（Best Practices）
+## 使用建议
 
 1. 使用 Kafka 上报，避免 HTTP 上报的性能开销
 2. 生产环境采样率设置为 0.1（10%）或更低
 3. 配置日志输出 TraceId，便于日志关联
 4. 使用 Elasticsearch 存储，支持大规模数据查询
+
 

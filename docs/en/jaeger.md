@@ -1,17 +1,17 @@
-# Jaeger Distributed Tracing
+﻿# Jaeger Distributed Tracing
 
-## What
+## Overview
 
 Jaeger is a CNCF open-source distributed tracing system. This project integrates OpenTracing + Jaeger for microservice call chain tracing.
 
-## Why
+## When to Use
 
 - Standardized: Based on OpenTracing standard, traceable backend can be replaced
 - Visualization: Provides intuitive call chain visualization interface
 - Performance Analysis: Analyze inter-service call latency and bottlenecks
 - Cloud Native: CNCF graduated project, integrates well with Kubernetes ecosystem
 
-## How
+## Setup
 
 ### 1. Deploy Jaeger
 
@@ -75,7 +75,7 @@ public void doSomething() {
 }
 ```
 
-## Cases
+## Example Scenarios
 
 ### Case 1: Automatic HTTP Request Tracing
 
@@ -110,16 +110,17 @@ public void asyncTask() {
 }
 ```
 
-## Pitfalls
+## Common Issues
 
 1. **Sampling Rate**: Do not use 100% sampling rate in production, it affects performance
 2. **Async Configuration**: `opentracing.spring.cloud.async.enabled` conflicts with higher Spring versions
 3. **Span Closing**: Ensure Span is properly closed, otherwise data is incomplete
 4. **Storage Backend**: Use Elasticsearch or Cassandra for storage in production
 
-## Best Practices
+## Recommendations
 
 1. Use probabilistic sampling in production, adjust sampling rate based on traffic
 2. Add custom tags for critical business operations for easier troubleshooting
 3. Use B3 or W3C format for cross-system tracing
 4. Combine with logging system, correlate logs via TraceId
+

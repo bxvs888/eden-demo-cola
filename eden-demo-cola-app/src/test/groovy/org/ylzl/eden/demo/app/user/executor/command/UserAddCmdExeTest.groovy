@@ -16,44 +16,36 @@
 
 package org.ylzl.eden.demo.app.user.executor.command
 
-import org.mockito.InjectMocks
-import org.mockito.Mock
-import org.mockito.MockitoAnnotations
-import org.slf4j.Logger
-import org.ylzl.eden.demo.app.user.assembler.UserAssembler
+import org.springframework.context.ApplicationEventPublisher
+import org.ylzl.eden.cola.dto.Response
 import org.ylzl.eden.demo.client.user.dto.command.UserAddCmd
+import org.ylzl.eden.demo.domain.user.domainservice.UserDomainService
 import org.ylzl.eden.demo.domain.user.entity.User
 import org.ylzl.eden.demo.domain.user.gateway.UserGateway
-import org.ylzl.eden.cola.dto.Response
+import org.ylzl.eden.demo.domain.user.valueobject.Email
+import org.ylzl.eden.demo.domain.user.valueobject.Login
+import org.ylzl.eden.demo.domain.user.valueobject.Password
 import spock.lang.Specification
 
-import static org.mockito.ArgumentMatchers.any
-import static org.mockito.Mockito.when
+import java.time.LocalDateTime
 
 class UserAddCmdExeTest extends Specification {
-	@Mock
-	UserGateway userGateway
-	@Mock
-	UserAssembler userAssembler
-	@Mock
-	Logger log
-	@InjectMocks
-	UserAddCmdExe userAddCmdExe
 
-	def setup() {
-		MockitoAnnotations.openMocks(this)
-	}
+    def userDomainService = Mock(UserDomainService)
+    def userGateway = Mock(UserGateway)
+    def eventPublisher = Mock(ApplicationEventPublisher)
+    def userAddCmdExe = new UserAddCmdExe(userDomainService, userGateway, eventPublisher)
 
-	def "test execute"() {
-		given:
-		when(userAssembler.toEntity(any())).thenReturn(User.builder().id(1L).login("login").email("email").password("password").build())
+    def "execute saves user and publishes domain events"() {
+        given:
+        def user = User.reconstitute(1L, Login.of('demoUser'), Email.of('demo@example.com'), Password.fromEncrypted('hashed-password'), User.UserStatus.ACTIVE, LocalDateTime.now(), LocalDateTime.now())
+        userDomainService.registerUser('demoUser', 'demo@example.com', 'Abcd1234') >> user
 
-		when:
-		Response result = userAddCmdExe.execute(new UserAddCmd("login", "password", "email"))
+        when:
+        Response result = userAddCmdExe.execute(new UserAddCmd('demoUser', 'Abcd1234', 'demo@example.com'))
 
-		then:
-		result == Response.buildSuccess()
-	}
+        then:
+        result.success
+        1 * userGateway.save(user)
+    }
 }
-
-//Generated with love by TestMe :) Please report issues and submit feature requests at: http://weirddev.com/forum#!/testme
