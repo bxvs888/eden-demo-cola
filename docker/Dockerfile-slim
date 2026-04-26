@@ -1,5 +1,5 @@
 # 使用基础镜像
-FROM m.daocloud.io/eclipse-temurin:11-jdk-alpine AS builder
+FROM eclipse-temurin:11-jdk-alpine AS builder
 
 # 指定构建模块
 ARG MODULE=eden-demo-cola-start
@@ -37,7 +37,7 @@ RUN $JAVA_HOME/bin/jlink \
 RUN java -Djarmode=layertools -jar application.jar extract
 
 # 创建容器镜像
-FROM m.daocloud.io/alpine:latest
+FROM alpine:latest
 
 # 定义元数据
 LABEL maintainer="梦想歌 <shiyindaxiaojie@gmail.com>"

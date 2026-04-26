@@ -26,26 +26,34 @@ pipeline {
         stage('Check Trigger & Changes') {
             steps {
                 script {
-                    def isManual = currentBuild.getBuildCauses().toString().contains('UserIdCause')
+                    currentBuild.description = env.ARTIFACT_VERSION
+                    def buildCauses = currentBuild.getBuildCauses()
+                    def causesString = buildCauses.toString()
+                    def isPureScm = false
+                    if (buildCauses.size() == 1 && causesString.contains('SCMTriggerCause')) {
+                        isPureScm = true
+                    }
                     def hasChanges = false
                     currentBuild.changeSets.each { set ->
                         if (set.items.length > 0) {
                             hasChanges = true
                         }
                     }
+                    echo "Build Causes Found: ${causesString}"
+                    echo "Is Pure SCM Trigger: ${isPureScm}"
+                    echo "Has SCM Changes: ${hasChanges}"
 
-                    echo "Trigger Type: ${isManual ? 'Manual' : 'System/SCM'}"
-                    echo "Has Changes: ${hasChanges}"
-
-                    if (!isManual && !hasChanges) {
-                        echo "Skipping build: No changes detected in SCM trigger."
+                    if (isPureScm && !hasChanges) {
+                        echo "Skipping build: No changes detected in automatic SCM trigger."
                         currentBuild.result = 'ABORTED'
-                        error("Skipping build: No changes detected in SCM trigger.")
+                        error("Stopping: No changes in SCM.")
+                    } else {
+                        echo "Proceeding: Triggered by ${isPureScm ? 'SCM with changes' : 'Manual/External API'}."
                     }
                 }
             }
         }
-        
+
         stage('Build') {
             steps {
                 script {
@@ -54,12 +62,12 @@ pipeline {
                     if (env.BRANCH_NAME == 'test') {
                         targetVersion = "test-SNAPSHOT"
                     }
-                    
-                    withEnv(["JAVA_HOME=${env.JDK11_HOME}", "PATH+JDK8=${env.JDK11_HOME}/bin"]) {
+
+                    withEnv(["JAVA_HOME=${env.JDK8_HOME}", "PATH+JDK8=${env.JDK8_HOME}/bin"]) {
                         sh """
-                            mvn -U -T 4C -DskipTests \
+                            mvn -U -DskipTests \
                             versions:set -DnewVersion=${targetVersion} \
-                            clean package deploy
+                            clean package
                         """
                     }
                 }
@@ -77,13 +85,23 @@ pipeline {
                         usernameVariable: 'DOCKER_USERNAME',
                         passwordVariable: 'DOCKER_PASSWORD'
                     )]) {
-                        sh "echo ${env.DOCKER_PASSWORD} | docker login ${env.DOCKER_REGISTRY} -u '${DOCKER_USERNAME}' --password-stdin"
-                        sh "docker build -t ${NEW_IMAGE} -f docker/Dockerfile ."
-                        sh "docker push ${NEW_IMAGE}"
+                        sh """
+                            AUTH=\$(echo -n "${DOCKER_USERNAME}:${DOCKER_PASSWORD}" | base64 | tr -d '\n')
+                            echo "{\\"auths\\":{\\"${env.DOCKER_REGISTRY}\\":{\\"auth\\":\\"\${AUTH}\\"}}}" > /kaniko/.docker/config.json
+                        """
+      
+                        sh """
+                            kaniko --context ${WORKSPACE} \
+                                   --dockerfile ${WORKSPACE}/docker/Dockerfile \
+                                   --destination ${NEW_IMAGE} \
+                                   --skip-tls-verify-pull \
+                                   --snapshot-mode=redo \
+                                   --use-new-run
+                        """
                     }
                 }
                 //timeout(time: 30, unit: 'MINUTES') {
-                //    input message: 'Finished deploy to K8s? (Click "Proceed" to continue)'
+                //    input message: 'Finished deploy to rainbond? (Click "Proceed" to continue)'
                 //}
                 script {
                     def COMPONENT_BUILD_URL = "http://${env.RAINBOND_HOST}:${env.RAINBOND_PORT}/openapi/v1/teams/${env.RAINBOND_TEAM_ID}/regions/${env.RAINBOND_REGION_NAME}/apps/${env.RAINBOND_APP_ID}/services/${env.RAINBOND_SERVICE_ID}/build"
@@ -91,7 +109,7 @@ pipeline {
                     withCredentials([
                         string(credentialsId: 'rainbond-openapi', variable: 'RAINBOND_TOKEN'),
                         usernamePassword(credentialsId: 'docker-robot', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
-                        
+
                         sh """
                             curl -X POST '${COMPONENT_BUILD_URL}' \
                                 -H 'Content-Type: application/json' \
@@ -114,14 +132,24 @@ pipeline {
                     usernameVariable: 'DOCKER_USERNAME',
                     passwordVariable: 'DOCKER_PASSWORD'
                 )]) {
-                    sh "echo ${env.DOCKER_PASSWORD} | docker login ${env.DOCKER_REGISTRY} -u '${env.DOCKER_USERNAME}' --password-stdin"
-                    sh "docker build -t ${env.NEW_IMAGE} -f docker/Dockerfile ."
-                    sh "docker push ${env.NEW_IMAGE}"
+                    sh """
+                        AUTH=\$(echo -n "${DOCKER_USERNAME}:${DOCKER_PASSWORD}" | base64 | tr -d '\n')
+                        echo "{\\"auths\\":{\\"${env.DOCKER_REGISTRY}\\":{\\"auth\\":\\"\${AUTH}\\"}}}" > /kaniko/.docker/config.json
+                    """
+  
+                    sh """
+                        kaniko --context ${WORKSPACE} \
+                               --dockerfile ${WORKSPACE}/docker/Dockerfile \
+                               --destination ${NEW_IMAGE} \
+                               --skip-tls-verify-pull \
+                               --snapshot-mode=redo \
+                               --use-new-run
+                    """
                 }
             }
         }
     }
-    
+
     post {
         success {
             script {
@@ -132,9 +160,9 @@ pipeline {
                         changeEntries << "• ${entry.msg} (${entry.author.fullName})  "
                     }
                 }
-                
+
                 def finalChangeLog = changeEntries ? changeEntries.join("\n") : "• 暂无代码变更"
-               
+
                 def jenkinsUrlEnc = java.net.URLEncoder.encode("${env.BUILD_URL}", "UTF-8")
                 def buttonList = [
                     [
@@ -161,11 +189,11 @@ pipeline {
                     text: [
                         "### ✅ <font color='#2A6EBB'>${env.IMAGE_NAME} 构建成功</font>  \n",
                         "---  \n",
-                        "#### ⚙️ 任务：[#${env.BUILD_NUMBER}](${env.BUILD_URL})  \n",
-                        "#### 🟢 状态：<font color='#00B42A'>Success</font>  \n",
-                        "#### ⏱ 耗时：${duration}  \n",
-                        "#### 🌿 分支：${env.BRANCH_NAME}  \n",
-                        "#### 🔖 版本：${env.ARTIFACT_VERSION}  \n",
+                        "#### ⚙️ 任务编号：[#${env.BUILD_NUMBER}](${env.BUILD_URL})  \n",
+                        "#### 🟢 构建状态：<font color='#00B42A'>Success</font>  \n",
+                        "#### ⏱ 构建耗时：${duration}  \n",
+                        "#### 🌿 分支名称：${env.BRANCH_NAME}  \n",
+                        "#### 🔖 镜像版本：${env.ARTIFACT_VERSION}  \n",
                         "  \n",
                         "#### 🐳 镜像地址  \n",
                         "> ${env.NEW_IMAGE}  \n",
@@ -187,7 +215,7 @@ pipeline {
                             changeEntries << "• ${entry.msg} (${entry.author.fullName})  "
                         }
                     }
-                    
+
                     def finalChangeLog = changeEntries ? changeEntries.join("\n") : "• 暂无代码变更"
 
                     dingtalk (
@@ -197,11 +225,11 @@ pipeline {
                         text: [
                             "### ❌ <font color='#FF0000'>${env.IMAGE_NAME} 构建失败</font>  \n",
                             "---  \n",
-                            "#### ⚙️ 任务：[#${env.BUILD_NUMBER}](${env.BUILD_URL})  \n",
-                            "#### 🔴 状态：<font color='#FF0000'>Failure</font>  \n",
-                            "#### ⏱ 耗时：${duration}  \n",
-                            "#### 🌿 分支：${env.BRANCH_NAME}  \n",
-                            "#### 🔖 版本：${env.ARTIFACT_VERSION}  \n",
+                            "#### ⚙️ 任务编号：[#${env.BUILD_NUMBER}](${env.BUILD_URL})  \n",
+                            "#### 🔴 构建状态：<font color='#FF0000'>Failure</font>  \n",
+                            "#### ⏱ 构建耗时：${duration}  \n",
+                            "#### 🌿 分支名称：${env.BRANCH_NAME}  \n",
+                            "#### 🔖 镜像版本：${env.ARTIFACT_VERSION}  \n",
                             "  \n",
                             "#### 📝 变更内容  \n",
                             "> ${finalChangeLog}"
