@@ -24,16 +24,6 @@ This project is built using the COLA architecture. COLA is a clean, object-orien
 - [English Documentation](./docs/en/README.md) - Component integration guides in English
 - [中文文档](./docs/zh-CN/README.md) - 中文组件集成指南
 
-The documentation covers:
-- Quick Start Guide
-- Registry & Configuration Center (Nacos)
-- Cache Components (Redis)
-- Data Source Components (MySQL, Liquibase, ShardingSphere, Dynamic-Datasource)
-- Message Queue Components (RocketMQ, Kafka, Dynamic-MQ)
-- Monitoring & Observability (CAT, Jaeger, Zipkin, Sentinel, Arthas)
-- RPC Components (Dubbo, Dynamic-TP)
-- Task Scheduling (XXL-Job)
-
 ## Component Structure
 
 ```mermaid
@@ -228,12 +218,6 @@ sequenceDiagram
 
 ## How to Build
 
-Due to significant architectural changes between `Spring Boot 2.4.x` and `Spring Boot 3.0.x`, we maintain branches aligned with Spring Boot versions:
-
-* 2.4.x branch for `Spring Boot 2.4.x`, minimum JDK 1.8.
-* 2.7.x branch for `Spring Boot 2.7.x`, minimum JDK 11.
-* 3.0.x branch for `Spring Boot 3.0.x`, minimum JDK 17.
-
 This project uses Maven for building. The quickest way to get started is to `git clone` to your local machine. To simplify unnecessary technical details, this project depends on [eden-architect](https://github.com/shiyindaxiaojie/eden-architect). Execute `mvn install -T 4C` in the project root directory to complete the build.
 
 ## How to Run
@@ -341,7 +325,7 @@ The following demonstrates continuous build and deployment using Jenkins.
 
 ### CODING CI
 
-The following demonstrates continuous build and deployment using CODING. [Portal](https://mengxiangge.netlify.app/2022/08/10/devops/coding%20%E6%8C%81%E7%BB%AD%E9%83%A8%E7%BD%B2%E5%AE%9E%E8%B7%B5/?highlight=coding)
+The following demonstrates continuous build and deployment using CODING. [Anchor Link](https://mengxiangge.netlify.app/2022/08/10/devops/coding%20%E6%8C%81%E7%BB%AD%E9%83%A8%E7%BD%B2%E5%AE%9E%E8%B7%B5/?highlight=coding)
 
 ![](https://cdn.jsdelivr.net/gh/shiyindaxiaojie/cdn/eden-demo-cola/coding-cicd.png)
 
@@ -703,28 +687,29 @@ eden-demo-cola-domain/
 
 ### Git Multi-person Collaboration Branch Management
 
-In the era of agile development, `GitFlow` seems inadequate. We've developed a simple and easy-to-use workflow for the team. [Portal](https://www.processon.com/view/63d5d1fc56e18032d4a00998)
+In the era of agile development, `GitFlow` seems inadequate. We've developed a simple and easy-to-use workflow for the team. [Anchor Link](https://www.processon.com/view/63d5d1fc56e18032d4a00998)
 
 ![](https://cdn.jsdelivr.net/gh/shiyindaxiaojie/cdn/processon/git-action.png)
 
+For detailed branch management strategies, Maven version management, and agile iteration cycles, please refer to the [Git Workflow](https://github.com/shiyindaxiaojie/eden-demo-cola/wiki/Git-Workflow).
+
 ### CAT Observability Solution
 
-Analyze the entire trace including `HTTP` request latency, `RPC` call details, `Log` business logs, `SQL` and `Cache` execution time through `TraceId`. [Portal](https://github.com/shiyindaxiaojie/cat)
+Analyze the entire trace including `HTTP` request latency, `RPC` call details, `Log` business logs, `SQL` and `Cache` execution time through `TraceId`. [Anchor Link](https://github.com/shiyindaxiaojie/cat)
 
 ![](https://cdn.jsdelivr.net/gh/shiyindaxiaojie/cdn/cat/tracing.png)
 
 ### Sentinel Traffic Governance Solution
 
-Configure flow control rules based on business load, and view interface QPS and rate limiting status at any time. [Portal](https://github.com/shiyindaxiaojie/Sentinel)
+Configure flow control rules based on business load, and view interface QPS and rate limiting status at any time. [Anchor Link](https://github.com/shiyindaxiaojie/Sentinel)
 
 ![](https://cdn.jsdelivr.net/gh/shiyindaxiaojie/cdn/sentinel/sentinel-dashboard-overview-custom.png)
 
 ### Arthas Online Diagnostic Tool
 
-Use runtime probes for dynamic service discovery, out-of-the-box, allowing you to diagnose your application in low-load environments. [Portal](https://github.com/shiyindaxiaojie/arthas)
+Use runtime probes for dynamic service discovery, out-of-the-box, allowing you to diagnose your application in low-load environments. [Anchor Link](https://github.com/shiyindaxiaojie/arthas)
 
 ![](https://cdn.jsdelivr.net/gh/shiyindaxiaojie/cdn/arthas/arthas-dashboard-overview.png)
-
 
 ## Versioning
 
@@ -739,6 +724,15 @@ Version iteration rules:
 * 1.0.0 <> 1.0.1: Compatible
 * 1.0.0 <> 1.1.0: Mostly compatible
 * 1.0.0 <> 2.0.0: Incompatible
+
+## Branch Management
+
+Due to significant architectural changes between `Spring Boot 2.4.x` and `Spring Boot 3.0.x`, we maintain branches aligned with Spring Boot versions:
+
+* 2.4.x branch for `Spring Boot 2.4.x`, minimum JDK 8.
+* 2.7.x branch for `Spring Boot 2.7.x`, minimum JDK 11.
+* 3.5.x branch for `Spring Boot 3.5.x`, minimum JDK 17.
+* 4.0.x branch for `Spring Boot 4.0.x`, minimum JDK 17.
 
 ## Changelog
 

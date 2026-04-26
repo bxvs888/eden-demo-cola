@@ -26,7 +26,7 @@ import java.io.Serializable;
  * 更新用户指令
  *
  * @author <a href="mailto:shiyindaxiaojie@gmail.com">gyl</a>
- * @since 2.4.13
+ * @since 2.4.x
  */
 @Builder
 @NoArgsConstructor
@@ -36,15 +36,19 @@ import java.io.Serializable;
 @Data
 public class UserModifyCmd implements Serializable {
 
+	/** 用户ID */
 	@NotNull(message = "用户ID 不能为空")
 	private Long id;
 
+	/** 用户账号 */
 	@NotBlank(message = "账号不能为空")
 	private String login;
 
+	/** 用户密码 */
 	@NotBlank(message = "密码不能为空")
 	private String password;
 
+	/** 用户邮箱 */
 	@NotBlank(message = "邮箱不能为空")
 	private String email;
 }

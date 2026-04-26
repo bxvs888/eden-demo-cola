@@ -25,7 +25,7 @@ import java.io.Serializable;
  * 根据分页查询获取用户列表指令
  *
  * @author <a href="mailto:shiyindaxiaojie@gmail.com">gyl</a>
- * @since 2.4.13
+ * @since 2.4.x
  */
 @Builder
 @NoArgsConstructor
@@ -35,7 +35,9 @@ import java.io.Serializable;
 @Data
 public class UserListByPageQry extends PageQuery implements Serializable {
 
+	/** 用户账号（模糊查询） */
 	private String login;
 
+	/** 用户邮箱（模糊查询） */
 	private String email;
 }

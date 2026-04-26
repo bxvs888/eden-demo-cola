@@ -25,7 +25,7 @@ import java.io.Serializable;
  * 根据分页查询获取用户列表指令
  *
  * @author <a href="mailto:shiyindaxiaojie@gmail.com">gyl</a>
- * @since 2.4.13
+ * @since 2.4.x
  */
 @Builder
 @NoArgsConstructor
@@ -35,6 +35,7 @@ import java.io.Serializable;
 @Data
 public class UserByIdQry implements Serializable {
 
+	/** 用户ID */
 	@NotNull(message = "用户ID 不能为空")
 	private Long id;
 }

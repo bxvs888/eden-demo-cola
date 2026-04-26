@@ -1,4 +1,4 @@
-/*
+﻿/*
  * Copyright 2012-2019 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -27,6 +27,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+/**
+ * 菜单领域组装器
+ *
+ * @author <a href="mailto:shiyindaxiaojie@gmail.com">gyl</a>
+ * @since 2.4.x
+ */
 @Component
 public class MenuAssembler {
 

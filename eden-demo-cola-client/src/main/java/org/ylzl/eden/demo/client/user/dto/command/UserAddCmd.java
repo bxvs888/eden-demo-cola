@@ -25,7 +25,7 @@ import java.io.Serializable;
  * 新增用户指令
  *
  * @author <a href="mailto:shiyindaxiaojie@gmail.com">gyl</a>
- * @since 2.4.13
+ * @since 2.4.x
  */
 @Builder
 @NoArgsConstructor
@@ -35,12 +35,15 @@ import java.io.Serializable;
 @Data
 public class UserAddCmd implements Serializable {
 
+	/** 用户账号 */
 	@NotBlank(message = "账号不能为空")
 	private String login;
 
+	/** 用户密码 */
 	@NotBlank(message = "密码不能为空")
 	private String password;
 
+	/** 用户邮箱 */
 	@NotBlank(message = "邮箱不能为空")
 	private String email;
 }
