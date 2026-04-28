@@ -1,4 +1,4 @@
-﻿# Data Source Configuration
+# Data Source Configuration
 
 ## Overview
 

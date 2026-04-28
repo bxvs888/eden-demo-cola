@@ -1,4 +1,4 @@
-﻿# CAT Application Monitoring
+# CAT Application Monitoring
 
 ## Overview
 

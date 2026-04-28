@@ -1,4 +1,4 @@
-﻿# Nacos Registry & Configuration Center
+# Nacos Registry & Configuration Center
 
 ## Overview
 

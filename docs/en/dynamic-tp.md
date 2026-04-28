@@ -1,4 +1,4 @@
-﻿# Dynamic-TP Dynamic Thread Pool
+# Dynamic-TP Dynamic Thread Pool
 
 ## Overview
 

@@ -1,4 +1,4 @@
-﻿# ShardingSphere Sharding
+# ShardingSphere Sharding
 
 ## Overview
 

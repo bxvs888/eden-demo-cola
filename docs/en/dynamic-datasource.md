@@ -1,4 +1,4 @@
-﻿# Dynamic-Datasource Multi-datasource
+# Dynamic-Datasource Multi-datasource
 
 ## Overview
 

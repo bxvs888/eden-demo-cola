@@ -1,4 +1,4 @@
-﻿# XXL-Job Distributed Task Scheduling
+# XXL-Job Distributed Task Scheduling
 
 ## Overview
 

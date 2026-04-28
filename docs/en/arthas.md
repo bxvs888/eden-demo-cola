@@ -1,4 +1,4 @@
-﻿# Arthas Online Diagnostics
+# Arthas Online Diagnostics
 
 ## Overview
 

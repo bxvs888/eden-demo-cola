@@ -1,4 +1,4 @@
-﻿# RocketMQ Message Queue
+# RocketMQ Message Queue
 
 ## Overview
 

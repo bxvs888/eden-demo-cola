@@ -1,4 +1,4 @@
-﻿# Sentinel Traffic Governance
+# Sentinel Traffic Governance
 
 ## Overview
 

@@ -1,4 +1,4 @@
-﻿# Jaeger Distributed Tracing
+# Jaeger Distributed Tracing
 
 ## Overview
 

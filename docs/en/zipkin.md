@@ -1,4 +1,4 @@
-﻿# Zipkin Distributed Tracing
+# Zipkin Distributed Tracing
 
 ## Overview
 

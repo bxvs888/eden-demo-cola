@@ -1,4 +1,4 @@
-﻿# Dubbo RPC Framework
+# Dubbo RPC Framework
 
 ## Overview
 

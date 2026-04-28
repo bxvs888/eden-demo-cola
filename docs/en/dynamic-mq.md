@@ -1,4 +1,4 @@
-﻿# Dynamic-MQ Dynamic Message Queue
+# Dynamic-MQ Dynamic Message Queue
 
 ## Overview
 

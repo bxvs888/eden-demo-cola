@@ -1,4 +1,4 @@
-﻿# Liquibase Database Version Management
+# Liquibase Database Version Management
 
 ## Overview
 

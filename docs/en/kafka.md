@@ -1,4 +1,4 @@
-﻿# Kafka Message Engine
+# Kafka Message Engine
 
 ## Overview
 
